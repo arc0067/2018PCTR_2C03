@@ -9,15 +9,16 @@ import java.util.ArrayList;
  *
  */
 public class Club {
+	// Definicion de constantes para controlar las invariantes.
 	public static final int MAX_PELOTAS_NOVATOS = 5;
 	public static final int MAX_PALOS_NOVATOS = 2;
 	public static final int MAX_PELOTAS_EXPERTOS = 1;
 	public static final int MIN_PALOS_EXPERTOS = 2;
 	public static final int MAX_PALOS_EXPERTOS = 5;
+	// Definicion de arrays para gestionar a los jugadores.
 	public static ArrayList<Jugador> jugadoresNovatos;
 	public static ArrayList<Jugador> jugadoresExpertos;
-	
-
+	// Materiales disponibles.
 	private int numPelotasIniciales;
 	private int numPalosIniciales;
 
@@ -45,10 +46,11 @@ public class Club {
 		}
 
 	}
-
+	
+	//Inicializacion del array de los jugadores.
 	public ArrayList<Jugador> inicializarJugadoresNovatos() {
 		ArrayList<Jugador> jugadoresNovatos = new ArrayList<Jugador>();
-		for (int i = 1; i <= 14  ; i++) {
+		for (int i = 1; i <= 14; i++) {
 			jugadoresNovatos.add(new Jugador(i));
 		}
 		return jugadoresNovatos;
@@ -56,7 +58,7 @@ public class Club {
 
 	public ArrayList<Jugador> inicializarJugadoresExpertos() {
 		ArrayList<Jugador> jugadoresExpertos = new ArrayList<Jugador>();
-		for (int j = 1; j <= 14 ; j++) {
+		for (int j = 1; j <= 14; j++) {
 			jugadoresExpertos.add(new Jugador(j));
 		}
 		return jugadoresExpertos;
@@ -64,54 +66,22 @@ public class Club {
 
 	public void reservar(int pelotas, int palos) {
 		synchronized (this) {
-			
-			if (pelotas > 0 && pelotas <= getNumPelotasIniciales() && palos > 0 && palos <= getNumPalosIniciales()) {
-					decrementarNumPelotasIniciales();
-					decrementarNumPalosIniciales();
-					// Salida por pantalla
-					for (Jugador j : getJugadoresNovatos()) {
-						System.out.println(
-								"Antes de reservar: " + j.getId() + "-" + " [ " + pelotas + " , " + palos + " ] reservar");
-						System.out.println("Después de reservar: " + j.getId() + "-"  + " [ " + numPelotasIniciales + " , "
-								+ numPalosIniciales + " , " + j.getJugar() + " ] reservar");
-					}
-					assert numPalosIniciales <= MAX_PALOS_NOVATOS;
-					assert numPelotasIniciales <= MAX_PELOTAS_NOVATOS;
-					
-					decrementarNumPelotasIniciales();
-					decrementarNumPalosIniciales();
-					// Salida por pantalla
-					for (Jugador j : getJugadoresExpertos()) {
-						System.out.println(
-								"Antes de reservar: " + j.getId() + "+" + " [ " + pelotas + " , " + palos + " ] reservar");
-						System.out.println("Después de reservar: " + j.getId() + "+" + " [ " + numPelotasIniciales + " , "
-								+ numPalosIniciales + " , " + j.getJugar() + " ] reservar");
-					}
-					assert MIN_PALOS_EXPERTOS >= numPalosIniciales;
-					assert numPalosIniciales <= MAX_PALOS_EXPERTOS;
-					assert numPelotasIniciales == MAX_PELOTAS_EXPERTOS;
-			}
-		}
-	}
 
-	public void devolver(int pelotas, int palos) {
-		synchronized (this) {
-			
 			if (pelotas > 0 && pelotas <= getNumPelotasIniciales() && palos > 0 && palos <= getNumPalosIniciales()) {
-				incrementarNumPelotasIniciales();
-				incrementarNumPalosIniciales();
+				decrementarNumPelotasIniciales();
+				decrementarNumPalosIniciales();
 				// Salida por pantalla
 				for (Jugador j : getJugadoresNovatos()) {
 					System.out.println(
-							"Antes de devolver: " + j.getId() + "-" + " [ " + pelotas + " , " + palos + " ] devolver");
-					System.out.println("Después de devolver: " + j.getId() + "-" + " [ " + numPelotasIniciales + " , "
-							+ numPalosIniciales + " , " + j.getJugar() + " ] devolver");
+							"Antes de reservar: " + j.getId() + "-" + " [ " + pelotas + " , " + palos + " ] reservar");
+					System.out.println("Después de reservar: " + j.getId() + "-" + " [ " + numPelotasIniciales + " , "
+							+ numPalosIniciales + " , " + j.getJugar() + " ] reservar");
 				}
 				assert numPalosIniciales <= MAX_PALOS_NOVATOS;
 				assert numPelotasIniciales <= MAX_PELOTAS_NOVATOS;
-		
-				incrementarNumPelotasIniciales();
-				incrementarNumPalosIniciales();
+
+				decrementarNumPelotasIniciales();
+				decrementarNumPalosIniciales();
 				// Salida por pantalla
 				for (Jugador j : getJugadoresExpertos()) {
 					System.out.println(
@@ -126,6 +96,41 @@ public class Club {
 		}
 	}
 
+	public void devolver(int pelotas, int palos) {
+		synchronized (this) {
+
+			if (pelotas > 0 && pelotas <= getNumPelotasIniciales() && palos > 0 && palos <= getNumPalosIniciales()) {
+				incrementarNumPelotasIniciales();
+				incrementarNumPalosIniciales();
+				// Salida por pantalla
+				for (Jugador j : getJugadoresNovatos()) {
+					System.out.println(
+							"Antes de devolver: " + j.getId() + "-" + " [ " + pelotas + " , " + palos + " ] devolver");
+					System.out.println("Después de devolver: " + j.getId() + "-" + " [ " + numPelotasIniciales + " , "
+							+ numPalosIniciales + " , " + j.getJugar() + " ] devolver");
+				}
+				//Invariantes
+				assert numPalosIniciales <= MAX_PALOS_NOVATOS;
+				assert numPelotasIniciales <= MAX_PELOTAS_NOVATOS;
+
+				incrementarNumPelotasIniciales();
+				incrementarNumPalosIniciales();
+				// Salida por pantalla
+				for (Jugador j : getJugadoresExpertos()) {
+					System.out.println(
+							"Antes de reservar: " + j.getId() + "+" + " [ " + pelotas + " , " + palos + " ] reservar");
+					System.out.println("Después de reservar: " + j.getId() + "+" + " [ " + numPelotasIniciales + " , "
+							+ numPalosIniciales + " , " + j.getJugar() + " ] reservar");
+				}
+				//Invariantes
+				assert MIN_PALOS_EXPERTOS >= numPalosIniciales;
+				assert numPalosIniciales <= MAX_PALOS_EXPERTOS;
+				assert numPelotasIniciales == MAX_PELOTAS_EXPERTOS;
+			}
+		}
+	}
+	
+	//Definicion de decrementos/incrementos
 	public void decrementarNumPelotasIniciales() {
 		numPelotasIniciales--;
 	}
@@ -141,37 +146,22 @@ public class Club {
 	public void incrementarNumPalosIniciales() {
 		numPalosIniciales++;
 	}
-
+	
+	//Definicion de getters
 	public int getNumPelotasIniciales() {
 		return numPelotasIniciales;
-	}
-
-	public void setNumPelotasIniciales(int numPelotasIniciales) {
-		this.numPelotasIniciales = numPelotasIniciales;
 	}
 
 	public int getNumPalosIniciales() {
 		return numPalosIniciales;
 	}
 
-	public void setNumPalosIniciales(int numPalosIniciales) {
-		this.numPalosIniciales = numPalosIniciales;
-	}
-	
 	public static ArrayList<Jugador> getJugadoresNovatos() {
 		return jugadoresNovatos;
 	}
 
-	public static void setJugadoresNovatos(ArrayList<Jugador> jugadoresNovatos) {
-		Club.jugadoresNovatos = jugadoresNovatos;
-	}
-
 	public static ArrayList<Jugador> getJugadoresExpertos() {
 		return jugadoresExpertos;
-	}
-
-	public static void setJugadoresExpertos(ArrayList<Jugador> jugadoresExpertos) {
-		Club.jugadoresExpertos = jugadoresExpertos;
 	}
 
 }
