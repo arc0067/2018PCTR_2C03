@@ -11,6 +11,8 @@ public class Jugador implements Runnable {
 	private int numVueltas;
 	private Club club;
 	private Random rand = new Random();
+	private int jugar = ThreadLocalRandom.current().nextInt(0,999);
+	private int descansar = ThreadLocalRandom.current().nextInt(0,999);
 	
 	public Jugador(int id) {
 		this.id=id;
@@ -25,8 +27,7 @@ public class Jugador implements Runnable {
 
 	@Override
 	public void run() {
-		int jugar = ThreadLocalRandom.current().nextInt(0,999);
-		int descansar = ThreadLocalRandom.current().nextInt(0,999);
+		
 		while(numVueltas != 0) {
 			try {
 				TimeUnit.MILLISECONDS.sleep(rand.nextInt(1000));
@@ -75,6 +76,22 @@ public class Jugador implements Runnable {
 
 	public void setClub(Club club) {
 		this.club = club;
+	}
+	
+	public int getJugar() {
+		return jugar;
+	}
+
+	public void setJugar(int jugar) {
+		this.jugar = jugar;
+	}
+
+	public int getDescansar() {
+		return descansar;
+	}
+
+	public void setDescansar(int descansar) {
+		this.descansar = descansar;
 	}
 
 }
