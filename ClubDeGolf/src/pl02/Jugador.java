@@ -28,7 +28,7 @@ public class Jugador implements Runnable {
 	@Override
 	public void run() {
 		
-		while(numVueltas != 0) {
+		while(getNumVueltas() <= Simulador.NUM_VUELTAS) {
 			try {
 				TimeUnit.MILLISECONDS.sleep(rand.nextInt(1000));
 				//reservar

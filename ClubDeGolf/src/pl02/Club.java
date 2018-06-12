@@ -48,35 +48,36 @@ public class Club {
 
 	public ArrayList<Jugador> inicializarJugadoresNovatos() {
 		ArrayList<Jugador> jugadoresNovatos = new ArrayList<Jugador>();
-		for (int i = 0, ii = 1; i <= Simulador.NUM_NOVATOS && ii <= 14; i++, ii++) {
-			jugadoresNovatos.add(new Jugador(ii));
+		for (int i = 1; i <= 14  ; i++) {
+			jugadoresNovatos.add(new Jugador(i));
 		}
 		return jugadoresNovatos;
 	}
 
 	public ArrayList<Jugador> inicializarJugadoresExpertos() {
 		ArrayList<Jugador> jugadoresExpertos = new ArrayList<Jugador>();
-		for (int j = 0, jj = 1; j <= Simulador.NUM_EXPERTOS && jj <= 14; j++, jj++) {
-			jugadoresExpertos.add(new Jugador(jj));
+		for (int j = 1; j <= 14 ; j++) {
+			jugadoresExpertos.add(new Jugador(j));
 		}
 		return jugadoresExpertos;
 	}
 
 	public void reservar(int pelotas, int palos) {
 		synchronized (this) {
-			if (pelotas > 0 && pelotas <= MAX_PELOTAS_NOVATOS && palos > 0 && palos <= MAX_PALOS_NOVATOS) {
-				decrementarNumPelotasIniciales();
-				decrementarNumPalosIniciales();
-				// Salida por pantalla
-				for (Jugador j : getJugadoresNovatos()) {
-					System.out.println(
-							"Antes de reservar: " + j.getId() + "-" + " [ " + pelotas + " , " + palos + " ] reservar");
-					System.out.println("Después de reservar: " + j.getId() + "-"  + " [ " + numPelotasIniciales + " , "
-							+ numPalosIniciales + " , " + j.getJugar() + " ] reservar");
-				}
-
-			} else {
-				if (pelotas > 0 && pelotas <= MAX_PELOTAS_EXPERTOS && palos >= MIN_PALOS_EXPERTOS && palos <= MAX_PALOS_EXPERTOS) {
+			
+			if (pelotas > 0 && pelotas <= getNumPelotasIniciales() && palos > 0 && palos <= getNumPalosIniciales()) {
+					decrementarNumPelotasIniciales();
+					decrementarNumPalosIniciales();
+					// Salida por pantalla
+					for (Jugador j : getJugadoresNovatos()) {
+						System.out.println(
+								"Antes de reservar: " + j.getId() + "-" + " [ " + pelotas + " , " + palos + " ] reservar");
+						System.out.println("Después de reservar: " + j.getId() + "-"  + " [ " + numPelotasIniciales + " , "
+								+ numPalosIniciales + " , " + j.getJugar() + " ] reservar");
+					}
+					assert numPalosIniciales <= MAX_PALOS_NOVATOS;
+					assert numPelotasIniciales <= MAX_PELOTAS_NOVATOS;
+					
 					decrementarNumPelotasIniciales();
 					decrementarNumPalosIniciales();
 					// Salida por pantalla
@@ -86,13 +87,16 @@ public class Club {
 						System.out.println("Después de reservar: " + j.getId() + "+" + " [ " + numPelotasIniciales + " , "
 								+ numPalosIniciales + " , " + j.getJugar() + " ] reservar");
 					}
-				}
+					assert MIN_PALOS_EXPERTOS >= numPalosIniciales;
+					assert numPalosIniciales <= MAX_PALOS_EXPERTOS;
+					assert numPelotasIniciales == MAX_PELOTAS_EXPERTOS;
 			}
 		}
 	}
 
 	public void devolver(int pelotas, int palos) {
 		synchronized (this) {
+			
 			if (pelotas > 0 && pelotas <= getNumPelotasIniciales() && palos > 0 && palos <= getNumPalosIniciales()) {
 				incrementarNumPelotasIniciales();
 				incrementarNumPalosIniciales();
@@ -103,19 +107,21 @@ public class Club {
 					System.out.println("Después de devolver: " + j.getId() + "-" + " [ " + numPelotasIniciales + " , "
 							+ numPalosIniciales + " , " + j.getJugar() + " ] devolver");
 				}
-
-			} else {
-				if (pelotas > 0 && pelotas <= getNumPelotasIniciales() && palos > 0 && palos <= getNumPalosIniciales()) {
-					incrementarNumPelotasIniciales();
-					incrementarNumPalosIniciales();
-					// Salida por pantalla
-					for (Jugador j : getJugadoresExpertos()) {
-						System.out.println(
-								"Antes de reservar: " + j.getId() + "+" + " [ " + pelotas + " , " + palos + " ] reservar");
-						System.out.println("Después de reservar: " + j.getId() + "+" + " [ " + numPelotasIniciales + " , "
-								+ numPalosIniciales + " , " + j.getJugar() + " ] reservar");
-					}
+				assert numPalosIniciales <= MAX_PALOS_NOVATOS;
+				assert numPelotasIniciales <= MAX_PELOTAS_NOVATOS;
+		
+				incrementarNumPelotasIniciales();
+				incrementarNumPalosIniciales();
+				// Salida por pantalla
+				for (Jugador j : getJugadoresExpertos()) {
+					System.out.println(
+							"Antes de reservar: " + j.getId() + "+" + " [ " + pelotas + " , " + palos + " ] reservar");
+					System.out.println("Después de reservar: " + j.getId() + "+" + " [ " + numPelotasIniciales + " , "
+							+ numPalosIniciales + " , " + j.getJugar() + " ] reservar");
 				}
+				assert MIN_PALOS_EXPERTOS >= numPalosIniciales;
+				assert numPalosIniciales <= MAX_PALOS_EXPERTOS;
+				assert numPelotasIniciales == MAX_PELOTAS_EXPERTOS;
 			}
 		}
 	}
