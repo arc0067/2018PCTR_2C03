@@ -39,14 +39,14 @@ public class Simulador {
 		Thread[] hilosJugadorExperto = new Thread[NUM_EXPERTOS];
 		
 		//Recorremos el array de novatos y lanzamos a los jugadores
-		for(int i = 1; i <= hilosJugadorNovato.length; i++) {
+		for(int i = 1; i < hilosJugadorNovato.length; i++) {
 			hilosJugadorNovato[i] = new Thread(new Jugador(i,false,NUM_VUELTAS,club));
 			hilosJugadorNovato[i].start();
 			
 		}
 		
 		//Recorremos el array de expertos y lanzamos a los jugadores
-		for(int j = 1; j <= hilosJugadorExperto.length ; j++ ) {
+		for(int j = 1; j < hilosJugadorExperto.length ; j++ ) {
 			hilosJugadorNovato[j] = new Thread(new Jugador(j,true,NUM_VUELTAS,club));
 			hilosJugadorNovato[j].start();
 		}
